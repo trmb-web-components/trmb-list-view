@@ -1,0 +1,110 @@
+<link rel="import" href="../@polymer/polymer/polymer-element.html">
+<link rel="import" href="../trmb-css/dist/components/table.css.min.html">
+
+<link rel="import">
+<dom-module id="trmb-list-view">
+    <template>
+        <style include="table-css">
+            
+        </style>
+        
+        <h2> User list </h2>
+        <dom-if if="{{loading}}">
+            <template>
+            Loading..
+            </template>
+    </dom-if>
+    <dom-if if="{{!loading}}">
+        <template>
+        <div class="tableData">
+            <div class="table">
+                <div class="tr">
+                    <div class="th td width0"><input type="checkbox"></div>
+                    <dom-repeat items="{{responseColumns}}">
+                        <template>
+                        <div class="th td">{{item}}</div>    
+                        </template>
+        </dom-repeat>
+        </div>
+        <div class="tbody">
+            <dom-repeat items="{{responseArray}}">
+                <template>
+                        
+            <div class="tr">
+                <div class="td width0"><input type="checkbox"></div>
+                <dom-repeat items="{{responseColumns}}" as="column">
+                        <template>
+                        <div class="th td">{{getColumnValue(item, column)}}</div>    
+                        </template>
+            </dom-repeat>
+        </div>
+        </template>
+        </dom-repeat>
+        </div>
+        </div>
+        </div>
+        </template>
+    </dom-if>
+    </template>
+    <script>
+        /**
+         * @customElement
+         * @polymer
+         */
+        class TrmbListView extends Polymer.Element {
+
+            static get is() {
+                return 'trmb-list-view';
+            }
+            static get properties() {
+                return {
+                    getUrl: String,
+                    bearerToken: String,
+                    xApikey: String,
+                    sendAsJson: {
+                        type: String,
+                        value: "true"
+                    },
+                    responseColumns: Object,
+                    responseArray: Object,
+                    loading: Boolean
+                };
+            }
+            ready() {
+                super.ready();
+                this.loading = true;
+                let xhr = new XMLHttpRequest();
+
+                xhr.onreadystatechange = handler.bind(this);
+                xhr.open('GET', this.getUrl);
+                xhr.responseType = 'json';
+
+                xhr.setRequestHeader('Accept', 'application/json');
+                if (this.xApikey) {
+                    xhr.setRequestHeader('x-apikey', this.xApikey);
+                } else if (this.bearerToken) {
+                    xhr.setRequestHeader("Authorization", "Bearer " + this.bearerToken)
+                }
+                xhr.send();
+
+                function handler(e) {
+                    if (e.target.readyState === 4) {
+                        this.loading = false;
+                        if (e.target.status === 200 && e.target.response) {
+                            this.responseColumns = Object.keys(e.target.response[0]);
+                            this.responseArray = e.target.response;
+                        } else {
+
+                        }
+                    }
+                }
+            }
+            getColumnValue(item, key) {
+                return item[key];
+
+            }
+        }
+
+        window.customElements.define(TrmbListView.is, TrmbListView);
+    </script>
+</dom-module>

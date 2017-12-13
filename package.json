@@ -1,0 +1,8 @@
+{
+  "name": "trmb-list-view",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/trmbl-web-components/trmb-list-view.git",
+  "author": "<balasuresh_varadharajan@trimble.com>",
+  "license": "MIT"
+}
