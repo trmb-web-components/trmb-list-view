@@ -1,5 +1,6 @@
 <link rel="import" href="../@polymer/polymer/polymer-element.html">
 <link rel="import" href="../trmb-css/dist/components/table.css.min.html">
+<link rel="import" href="../trmb-css/dist/components/checkbox.css.min.html">
 
 <link rel="import">
 <dom-module id="trmb-list-view">
@@ -7,7 +8,9 @@
         <style include="table-css">
             
         </style>
-        
+        <style include="checkbox-css">
+            
+        </style>
         <h2> User list </h2>
         <dom-if if="{{loading}}">
             <template>
@@ -19,10 +22,14 @@
         <div class="tableData">
             <div class="table">
                 <div class="tr">
-                    <div class="th td width0"><input type="checkbox"></div>
+                    <div class="th td width0">
+                        <div class="custom-checkbox"><input type="checkbox"><label></label></div>
+                    </div>
                     <dom-repeat items="{{responseColumns}}">
                         <template>
-                        <div class="th td">{{item}}</div>    
+                        <div class="th td">
+                            <div class="truncate-auto">{{item}}</div>
+                        </div>    
                         </template>
         </dom-repeat>
         </div>
@@ -31,10 +38,14 @@
                 <template>
                         
             <div class="tr">
-                <div class="td width0"><input type="checkbox"></div>
+                <div class="td width0">
+                    <div class="custom-checkbox"><input type="checkbox"><label></label></div>
+                </div>
                 <dom-repeat items="{{responseColumns}}" as="column">
                         <template>
-                        <div class="th td">{{getColumnValue(item, column)}}</div>    
+                        <div class="td">
+                            <div class="truncate-auto">{{getColumnValue(item, column)}}</div>
+                                </div>    
                         </template>
             </dom-repeat>
         </div>
